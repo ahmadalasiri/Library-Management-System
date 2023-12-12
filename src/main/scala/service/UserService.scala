@@ -9,7 +9,7 @@ object PrivateExecutionContext {
   implicit val ec: ExecutionContext =
     ExecutionContext.fromExecutorService(executor)
 }
-object libraryService {
+object userService {
 
   import slick.jdbc.PostgresProfile.api._
   import PrivateExecutionContext._
@@ -20,16 +20,19 @@ object libraryService {
       password: String
   ): Unit = {
     val user =
-      User(12, name, email, password, new Timestamp(System.currentTimeMillis()))
-
-    val queryDescription = SlickTables.userTable += user
-
-    val futuredId: Future[Int] = Connection.db.run(queryDescription)
-    futuredId.onComplete {
-      case Success(id) => println(s"Inserted user with id: $id")
-      case Failure(e)  => println(s"Failed to insert user: $e")
-    }
-    Thread.sleep(10000)
+      User(0, name, email, password, new Timestamp(System.currentTimeMillis()))
+    // create a query description to insert a user and return the id
+    val queryDescription =
+      SlickTables.userTable returning SlickTables.userTable.map { _.id } into (
+        (user, id) => user.copy(id = id)
+      ) += user
+    // create a future object to store the result of the query
+    val futuredResult = Connection.db.run(queryDescription)
+    val result = Await.result(
+      futuredResult,
+      scala.concurrent.duration.Duration.Inf // blocking call to get the result of future object
+    )
+    println(s"User added with result: $result")
 
   }
 
@@ -52,5 +55,5 @@ object libraryService {
 
   }
 
-  // Other methods for managing library resources, handling book checkout, etc.
+  // Other methods for managing user resources, handling book checkout, etc.
 }

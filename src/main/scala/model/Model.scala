@@ -11,13 +11,16 @@ case class User(
 object SlickTables {
   import slick.jdbc.PostgresProfile.api._
 
-  class UserTable(tag: Tag) extends Table[User](tag, Some("public"), "User") {
+  class UserTable(tag: Tag) extends Table[User](tag, Some("users"), "User") {
 
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")
     def email = column[String]("email")
     def password = column[String]("password")
-    def createdAt = column[Timestamp]("created_at")
+    def createdAt = column[Timestamp](
+      "created_at",
+      O.Default(new Timestamp(System.currentTimeMillis()))
+    )
 
     // mapping function to the case class  User
 
