@@ -11,7 +11,7 @@ case class User(
 object SlickTables {
   import slick.jdbc.PostgresProfile.api._
 
-  class UserTable(tag: Tag) extends Table[User](tag, "User") {
+  class UserTable(tag: Tag) extends Table[User](tag, Some("public"), "User") {
 
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")

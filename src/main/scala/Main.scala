@@ -10,12 +10,12 @@ object Main {
         """
 Please select an option from the following menu:
  -----------------------------------------------------------------
-| 1.  Register New User           |   2.  Check In                |
+| 1.  Register New User           |   2.  Get All Users           |
 | 3.  Report Generation           |   4.  Manage Library Resources|
 | 5.  Handle Book Checkout        |   6.  Manage User Accounts    |
 | 7.  Create Reports              |   8.  Monitor Library Usage   |
-| 9.  View Available Books        |   10. View Borrowed Books      |
-| 11. Search for Books            |   12. Exit                     |
+| 9.  View Available Books        |   10. View Borrowed Books     |
+| 11. Search for Books            |   12. Exit                    |
  -----------------------------------------------------------------
 """
       )
@@ -31,6 +31,9 @@ Please select an option from the following menu:
             var email = readLine("Enter email of customer: ")
             var password = readLine("Enter password of customer: ")
             libraryService.addUser(name, email, password)
+          // 2.  Get All Users
+          case 2 =>
+            libraryService.getAllUsers()
 
           // // 2.  Check In
           // case 2 =>
