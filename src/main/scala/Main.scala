@@ -20,7 +20,8 @@ object Main {
 Please select an option from the following menu:
  -----------------------------------------------------------------
 | 1.  Managing users              |   2.  Managing books          |
-| 3.  Managing transactions       |   4.  Managing fines          |
+| 3.  Managing transactions       |   4.  Report Generation       |
+| 4.  Managing fines          |
 | 3.  Report Generation           |   4.  Manage Library Resources|
 | 5.  Handle Book Checkout        |   6.  Manage Users Accounts    |
 | 7.  Create Reports              |   8.  Monitor Library Usage   |
@@ -258,6 +259,48 @@ Please select an option from the following menu:
                   // 8. Back to Main Menu
                   case 8 =>
                     manageTransactions = false
+
+                  case _ =>
+                    println("Invalid choice. Please try again.")
+                }
+              } catch {
+                case a: NumberFormatException =>
+                  println(s"NumberFormatException occurred. Try again!")
+              }
+            }
+
+          // 4. Report Generation
+          case 4 =>
+            var reportGeneration = true
+            while (reportGeneration) {
+              println("""
+Please select an option from the following menu:
+  -------------------------------------------------------------
+  | 1.  Generate User Report          |   2.  Generate Book Report   |
+  | 3.  Generate Transaction Report   |   4.  Back to Main Menu      |
+  -------------------------------------------------------------
+                """)
+              try {
+                var choice = readLine(
+                  "Enter number corresponding to your choice: "
+                ).toInt
+
+                choice match {
+                  // 1. Generate User Report
+                  case 1 =>
+                    reportService.generateUserReport()
+
+                  // 2. Generate Book Report
+                  case 2 =>
+                    reportService.generateBookReport()
+
+                  // 3. Generate Transaction Report
+                  case 3 =>
+                    reportService.generateTransactionReport()
+
+                  // 4. Back to Main Menu
+                  case 4 =>
+                    reportGeneration = false
 
                   case _ =>
                     println("Invalid choice. Please try again.")
