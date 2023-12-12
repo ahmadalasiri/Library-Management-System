@@ -18,7 +18,7 @@ object Main {
         """
 Please select an option from the following menu:
  -----------------------------------------------------------------
-| 1.  Managing users              |   2.  Check In                 |
+| 1.  Managing users              |   2.  Managing books          |
 | 3.  Report Generation           |   4.  Manage Library Resources|
 | 5.  Handle Book Checkout        |   6.  Manage Users Accounts    |
 | 7.  Create Reports              |   8.  Monitor Library Usage   |
@@ -97,6 +97,80 @@ Please select an option from the following menu:
                   // // 6. Back to Main Menu
                   case 6 =>
                     manageUsers = false
+
+                  case _ =>
+                    println("Invalid choice. Please try again.")
+                }
+              } catch {
+                case a: NumberFormatException =>
+                  println(s"NumberFormatException occurred. Try again!")
+              }
+            }
+
+          // 2. Manage Books
+          case 2 =>
+            var manageBooks = true
+            while (manageBooks) {
+              println("""
+Please select an option from the following menu:
+  -----------------------------------------------------------------
+  | 1.  Add New Book           |   2.  Remove Book                | 
+  | 3.  Update Book            |   4.  View All Books             |
+  | 5.  View Book by Id        |   6. Back to Main Menu           |
+  -----------------------------------------------------------------
+                """)
+              try {
+                var choice = readLine(
+                  "Enter number corresponding to your choice: "
+                ).toInt
+
+                choice match {
+                  // 1. Add New Book
+                  case 1 =>
+                    var title = readLine("Enter title of book: ")
+                    var author = readLine("Enter author of book: ")
+                    var price = readLine("Enter price of book: ").toDouble
+                    var isbn = readLine("Enter isbn of book: ")
+                    bookService.addBook(title, author, price, isbn)
+
+                  // 2. Remove Book
+                  case 2 =>
+                    var bookId = readLine(
+                      "Enter Id of book to be removed: "
+                    ).toInt
+                    bookService.removeBook(id = bookId)
+
+                  // 3. Update Book
+                  case 3 =>
+                    var bookId = readLine(
+                      "Enter Id of book to be updated: "
+                    ).toInt
+                    var title = readLine("Enter title of book: ")
+                    var author = readLine("Enter author of book: ")
+                    var price = readLine("Enter price of book: ").toDouble
+                    var isbn = readLine("Enter isbn of book: ")
+                    bookService.updateBook(
+                      id = bookId,
+                      title = title,
+                      author = author,
+                      price = price,
+                      isbn = isbn
+                    )
+
+                  // 4. View All Books
+                  case 4 =>
+                    bookService.getAllBooks()
+
+                  // 5. View Book by Id
+                  case 5 =>
+                    var bookId = readLine(
+                      "Enter Id of book to be viewed: "
+                    ).toInt
+                    bookService.getBookById(id = bookId)
+
+                  // 6. Back to Main Menu
+                  case 6 =>
+                    manageBooks = false
 
                   case _ =>
                     println("Invalid choice. Please try again.")
