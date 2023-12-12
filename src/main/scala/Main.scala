@@ -1,6 +1,7 @@
 import scala.io.StdIn.readLine
 import scala.util.control.Breaks
 import org.slf4j.LoggerFactory
+import java.sql.Timestamp
 import ch.qos.logback.classic.{Level, LoggerContext}
 
 object Main {
@@ -197,7 +198,12 @@ Please select an option from the following menu:
                     var dueDate = readLine("Enter due date of book: ")
                     var returnDate = readLine("Enter return date of book: ")
                     var fineAmount = readLine("Enter fine amount of book: ").toDouble
-                    transactionService.addTransaction(userNationalId, bookId, checkoutDate, dueDate, returnDate, fineAmount)
+
+                    val checkoutTimestamp = Timestamp.valueOf(checkoutDate)
+                    val dueTimestamp = Timestamp.valueOf(dueDate)
+                    val returnTimestamp = Timestamp.valueOf(returnDate)
+
+                    transactionService.addTransaction(userNationalId, bookId, checkoutTimestamp, dueTimestamp, returnTimestamp, fineAmount)
 
                   // 2. Remove Transaction
                   case 2 =>
@@ -217,7 +223,12 @@ Please select an option from the following menu:
                     var dueDate = readLine("Enter due date of book: ")
                     var returnDate = readLine("Enter return date of book: ")
                     var fineAmount = readLine("Enter fine amount of book: ").toDouble
-                    transactionService.updateTransaction(transactionId, userNationalId, bookId, checkoutDate, dueDate, returnDate, fineAmount)
+
+                    val checkoutTimestamp = Timestamp.valueOf(checkoutDate)
+                    val dueTimestamp = Timestamp.valueOf(dueDate)
+                    val returnTimestamp = Timestamp.valueOf(returnDate)
+
+                    transactionService.updateTransaction(transactionId, userNationalId, bookId, checkoutTimestamp, dueTimestamp, returnTimestamp, fineAmount)
 
                   // 4. View All Transactions
                   case 4 =>
