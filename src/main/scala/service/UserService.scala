@@ -6,16 +6,14 @@ object userService {
   import slick.jdbc.PostgresProfile.api._
 
   def addUser(
-      name: String,
-      email: String,
-      password: String
+      nationalId: String,
+      name: String
   ): Unit = {
     val user =
-      User(0, name, email, password, new Timestamp(System.currentTimeMillis()))
+      User(nationalId, name, new Timestamp(System.currentTimeMillis()))
     // create a query description to insert a user and return the id
     val queryDescription =
-      SlickTables.userTable returning SlickTables.userTable.map { _.id } into ((user, id) => user.copy(id = id)) += user
-
+      SlickTables.userTable returning SlickTables.userTable.map { _.nationalId } into ((user, national_id) => user.copy(nationalId = national_id)) += user
     // create a future object to store the result of the query
     val futuredResult = Connection.db.run(queryDescription)
 
@@ -23,13 +21,13 @@ object userService {
       futuredResult,
       scala.concurrent.duration.Duration.Inf // blocking call to get the result of future object
     )
-    if (result.id == 0) println("Failed to add user")
+    if (result.nationalId == "") println("Failed to add user")
     else println("User added successfully, user => " + result)
 
   }
 
-  def removeUser(id: Long): Unit = {
-    val queryDescription = SlickTables.userTable.filter(_.id === id).delete
+  def removeUser(nationalId: String): Unit = {
+    val queryDescription = SlickTables.userTable.filter(_.nationalId === nationalId).delete
     val futuredResult = Connection.db.run(queryDescription)
     val result = Await.result(
       futuredResult,
@@ -39,13 +37,13 @@ object userService {
     else println("User removed successfully")
   }
 
-  def updateUser(id: Long, name: String, email: String, password: String): Unit = {
+  def updateUser(nationalId: String, name: String): Unit = {
 
     // create a query description to update a user and return the  user
     val queryDescription = SlickTables.userTable
-      .filter(_.id === id)
-      .map(user => (user.name, user.email, user.password))
-      .update((name, email, password))
+      .filter(_.nationalId === nationalId)
+      .map(user => (user.nationalId, user.name))
+      .update((nationalId, name))
 
     // create a future object to store the result of the query
     val futuredResult = Connection.db.run(queryDescription)
@@ -73,9 +71,9 @@ object userService {
 
   }
 
-  def getUserById(id: Long): Unit = {
-    val queryDescription = SlickTables.userTable.filter(_.id === id).result
-    val futuredUser: Future[Seq[User]] = Connection.db.run(queryDescription)
+  def getUserByNationalId(nationalId: String): Unit = {
+    val queryDescription = SlickTables.userTable.filter(_.nationalId === nationalId)
+    val futuredUser: Future[Seq[User]] = Connection.db.run(queryDescription.result)
     val user = Await.result(
       futuredUser,
       scala.concurrent.duration.Duration.Inf

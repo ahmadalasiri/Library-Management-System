@@ -56,32 +56,24 @@ Please select an option from the following menu:
                 choice match {
                   // 1. Add New User
                   case 1 =>
+                    var nationalId = readLine("Enter national id of user: ")
                     var name = readLine("Enter name of user: ")
-                    var email = readLine("Enter email of user: ")
-                    var password = readLine("Enter password of user: ")
-                    userService.addUser(name, email, password)
+                    userService.addUser(nationalId, name)
 
                   // // 2. Remove User
                   case 2 =>
-                    var userId = readLine(
-                      "Enter Id of user to be removed: "
-                    ).toInt
-                    userService.removeUser(id = userId)
+                    var nationalId = readLine(
+                      "Enter national id of user to be removed: "
+                    )
+                    userService.removeUser(nationalId)
 
                   // // 3. Update User
                   case 3 =>
-                    var userId = readLine(
-                      "Enter Id of user to be updated: "
-                    ).toInt
-                    var name = readLine("Enter name of user: ")
-                    var email = readLine("Enter email of user: ")
-                    var password = readLine("Enter password of user: ")
-                    userService.updateUser(
-                      id = userId,
-                      name = name,
-                      email = email,
-                      password = password
+                    var nationalId = readLine(
+                      "Enter national id of user to be updated: "
                     )
+                    var name = readLine("Enter name of user: ")
+                    userService.updateUser(nationalId, name)
 
                   // // 4. View All Users
                   case 4 =>
@@ -89,10 +81,10 @@ Please select an option from the following menu:
 
                   // // 5. View User by Id
                   case 5 =>
-                    var userId = readLine(
-                      "Enter Id of user to be viewed: "
-                    ).toInt
-                    userService.getUserById(id = userId)
+                    var nationalId = readLine(
+                      "Enter national id of user to be viewed: "
+                    )
+                    userService.getUserByNationalId(nationalId)
 
                   // // 6. Back to Main Menu
                   case 6 =>
@@ -129,9 +121,10 @@ Please select an option from the following menu:
                   case 1 =>
                     var title = readLine("Enter title of book: ")
                     var author = readLine("Enter author of book: ")
-                    var price = readLine("Enter price of book: ").toDouble
                     var isbn = readLine("Enter isbn of book: ")
-                    bookService.addBook(title, author, price, isbn)
+                    var availability = readLine("Enter availability of book: ").toBoolean
+                    var location = readLine("Enter location of book: ")
+                    bookService.addBook(title, author, isbn, availability, location)
 
                   // 2. Remove Book
                   case 2 =>
@@ -147,15 +140,10 @@ Please select an option from the following menu:
                     ).toInt
                     var title = readLine("Enter title of book: ")
                     var author = readLine("Enter author of book: ")
-                    var price = readLine("Enter price of book: ").toDouble
                     var isbn = readLine("Enter isbn of book: ")
-                    bookService.updateBook(
-                      id = bookId,
-                      title = title,
-                      author = author,
-                      price = price,
-                      isbn = isbn
-                    )
+                    var availability = readLine("Enter availability of book: ").toBoolean
+                    var location = readLine("Enter location of book: ")
+                    bookService.updateBook(bookId, title, author, isbn, availability, location)
 
                   // 4. View All Books
                   case 4 =>

@@ -4,8 +4,8 @@ import java.sql.Timestamp
 object bookService {
   import slick.jdbc.PostgresProfile.api._
 
-  def addBook(title: String, author: String, price: Double, isbn: String): Unit = {
-    val book = Book(0, title, author, price, isbn, new Timestamp(System.currentTimeMillis()))
+  def addBook(title: String, author: String, isbn: String, availability: Boolean, location: String): Unit = {
+    val book = Book(0, title, author, isbn, availability, location, new Timestamp(System.currentTimeMillis()))
     val queryDescription = SlickTables.bookTable returning SlickTables.bookTable.map { _.id } into ((book, id) => book.copy(id = id)) += book
     val futuredResult = Connection.db.run(queryDescription)
     val result = Await.result(
@@ -27,11 +27,11 @@ object bookService {
     else println("Book removed successfully")
   }
 
-  def updateBook(id: Long, title: String, author: String, price: Double, isbn: String): Unit = {
+  def updateBook(id: Long, title: String, author: String, isbn: String, availability: Boolean, location: String): Unit = {
     val queryDescription = SlickTables.bookTable
       .filter(_.id === id)
-      .map(book => (book.title, book.author, book.price, book.isbn))
-      .update((title, author, price, isbn))
+      .map(book => (book.title, book.author, book.isbn, book.availability, book.location))
+      .update((title, author, isbn, availability, location))
     val futuredResult = Connection.db.run(queryDescription)
     val result = Await.result(
       futuredResult,

@@ -1,10 +1,8 @@
 import java.sql.Timestamp
 
 case class User(
-    id: Long,
+    nationalId: String,
     name: String,
-    email: String,
-    password: String,
     createdAt: Timestamp
 )
 
@@ -12,8 +10,9 @@ case class Book(
     id: Long,
     title: String,
     author: String,
-    price: Double,
     isbn: String,
+    availability: Boolean,
+    location: String,
     createdAt: Timestamp
 )
 
@@ -22,20 +21,15 @@ object SlickTables {
 
   class UserTable(tag: Tag) extends Table[User](tag, Some("users"), "User") {
 
-    def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+    def nationalId = column[String]("national_id", O.PrimaryKey)
     def name = column[String]("name")
-    def email = column[String]("email")
-    def password = column[String]("password")
     def createdAt = column[Timestamp](
       "created_at",
       O.Default(new Timestamp(System.currentTimeMillis()))
     )
 
-    // mapping function to the case class  User
-
-    override def * =
-      (id, name, email, password, createdAt) <> (User.tupled, User.unapply)
-
+    // mapping function to the case class User
+    override def * = (nationalId, name, createdAt) <> (User.tupled, User.unapply)
   }
 
   class BookTable(tag: Tag) extends Table[Book](tag, Some("books"), "Book") {
@@ -43,8 +37,9 @@ object SlickTables {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def title = column[String]("title")
     def author = column[String]("author")
-    def price = column[Double]("price")
     def isbn = column[String]("isbn")
+    def availability = column[Boolean]("availability")
+    def location = column[String]("location")
     def createdAt = column[Timestamp](
       "created_at",
       O.Default(new Timestamp(System.currentTimeMillis()))
@@ -52,8 +47,7 @@ object SlickTables {
 
     // mapping function to the case class  Book
 
-    override def * =
-      (id, title, author, price, isbn, createdAt) <> (Book.tupled, Book.unapply)
+    override def * = (id, title, author, isbn, availability, location, createdAt) <> (Book.tupled, Book.unapply)
 
   }
 
