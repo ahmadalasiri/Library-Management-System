@@ -23,28 +23,55 @@ object userService {
       User(0, name, email, password, new Timestamp(System.currentTimeMillis()))
     // create a query description to insert a user and return the id
     val queryDescription =
-      SlickTables.userTable returning SlickTables.userTable.map { _.id } into (
-        (user, id) => user.copy(id = id)
-      ) += user
+      SlickTables.userTable returning SlickTables.userTable.map { _.id } into ((user, id) => user.copy(id = id)) += user
+
     // create a future object to store the result of the query
     val futuredResult = Connection.db.run(queryDescription)
+
     val result = Await.result(
       futuredResult,
       scala.concurrent.duration.Duration.Inf // blocking call to get the result of future object
     )
-    println(s"User added with result: $result")
+    if (result.id == 0) println("Failed to add user")
+    else println("User added successfully, user => " + result)
 
+  }
+
+  def removeUser(id: Long): Unit = {
+    val queryDescription = SlickTables.userTable.filter(_.id === id).delete
+    val futuredResult = Connection.db.run(queryDescription)
+    val result = Await.result(
+      futuredResult,
+      scala.concurrent.duration.Duration.Inf
+    )
+    if (result == 0) println("No user found")
+    else println("User removed successfully")
+  }
+
+  def updateUser(id: Long, name: String, email: String, password: String): Unit = {
+
+    // create a query description to update a user and return the  user
+    val queryDescription = SlickTables.userTable
+      .filter(_.id === id)
+      .map(user => (user.name, user.email, user.password))
+      .update((name, email, password))
+
+    // create a future object to store the result of the query
+    val futuredResult = Connection.db.run(queryDescription)
+
+    val result = Await.result(
+      futuredResult,
+      scala.concurrent.duration.Duration.Inf // blocking call to get the result of future object
+    )
+
+    if (result == 0) println("No user found")
+    else println("User updated successfully")
   }
 
   def getAllUsers(): Unit = {
     val queryDescription = SlickTables.userTable.result
 
     val futuredUsers: Future[Seq[User]] = Connection.db.run(queryDescription)
-    // futuredUsers.onComplete {
-    //   case Success(users) => users.foreach(println(_))
-    //   case Failure(e)     => println(s"Failed to get users: $e")
-    // }
-    // Thread.sleep(10000)
     val users = Await.result(
       futuredUsers,
       scala.concurrent.duration.Duration.Inf
@@ -55,5 +82,15 @@ object userService {
 
   }
 
-  // Other methods for managing user resources, handling book checkout, etc.
+  def getUserById(id: Long): Unit = {
+    val queryDescription = SlickTables.userTable.filter(_.id === id).result
+    val futuredUser: Future[Seq[User]] = Connection.db.run(queryDescription)
+    val user = Await.result(
+      futuredUser,
+      scala.concurrent.duration.Duration.Inf
+    ) //  blocking call to get the result of future object
+    if (user.isEmpty) println("No user found")
+    else
+      user.foreach(println(_))
+  }
 }

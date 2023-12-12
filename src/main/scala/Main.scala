@@ -1,6 +1,14 @@
 import scala.io.StdIn.readLine
 import scala.util.control.Breaks
+import org.slf4j.LoggerFactory
+import ch.qos.logback.classic.{Level, LoggerContext}
+
 object Main {
+
+  val loggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
+  // loggerContext.getLogger("org.slf4j.impl.StaticLoggerBinder").setLevel(Level.INFO)
+  loggerContext.stop()
+
   def main(args: Array[String]): Unit = {
     var continue = true
     println("Welcome to Library Management System!")
@@ -61,23 +69,23 @@ Please select an option from the following menu:
                     userService.removeUser(id = userId)
 
                   // // 3. Update User
-                  // case 3 =>
-                  //   var userId = readLine(
-                  //     "Enter Id of user to be updated: "
-                  //   ).toInt
-                  //   var name = readLine("Enter name of user: ")
-                  //   var email = readLine("Enter email of user: ")
-                  //   var password = readLine("Enter password of user: ")
-                  //   userService.updateUser(
-                  //     id = userId,
-                  //     name = name,
-                  //     email = email,
-                  //     password = password
-                  //   )
+                  case 3 =>
+                    var userId = readLine(
+                      "Enter Id of user to be updated: "
+                    ).toInt
+                    var name = readLine("Enter name of user: ")
+                    var email = readLine("Enter email of user: ")
+                    var password = readLine("Enter password of user: ")
+                    userService.updateUser(
+                      id = userId,
+                      name = name,
+                      email = email,
+                      password = password
+                    )
 
                   // // 4. View All Users
-                  // case 4 =>
-                  //   userService.getAllUsers()
+                  case 4 =>
+                    userService.getAllUsers()
 
                   // // 5. View User by Id
                   // case 5 =>
