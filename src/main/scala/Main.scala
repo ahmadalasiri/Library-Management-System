@@ -88,11 +88,11 @@ Please select an option from the following menu:
                     userService.getAllUsers()
 
                   // // 5. View User by Id
-                  // case 5 =>
-                  //   var userId = readLine(
-                  //     "Enter Id of user to be viewed: "
-                  //   ).toInt
-                  //   userService.getUserById(id = userId)
+                  case 5 =>
+                    var userId = readLine(
+                      "Enter Id of user to be viewed: "
+                    ).toInt
+                    userService.getUserById(id = userId)
 
                   // // 6. Back to Main Menu
                   case 6 =>
