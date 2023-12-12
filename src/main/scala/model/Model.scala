@@ -56,6 +56,7 @@ object SlickTables {
       (id, title, author, price, isbn, createdAt) <> (Book.tupled, Book.unapply)
 
   }
+
   lazy val userTable = TableQuery[UserTable] // TableQuery object for the User table
   lazy val bookTable = TableQuery[BookTable] // TableQuery object for the Book table
 }
