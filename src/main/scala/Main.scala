@@ -19,6 +19,7 @@ object Main {
 Please select an option from the following menu:
  -----------------------------------------------------------------
 | 1.  Managing users              |   2.  Managing books          |
+| 3.  Managing transactions       |   4.  Managing fines          |
 | 3.  Report Generation           |   4.  Manage Library Resources|
 | 5.  Handle Book Checkout        |   6.  Manage Users Accounts    |
 | 7.  Create Reports              |   8.  Monitor Library Usage   |
@@ -169,6 +170,93 @@ Please select an option from the following menu:
               }
             }
 
+          // 3. Manage Transactions
+          case 3 =>
+            var manageTransactions = true
+            while (manageTransactions) {
+              println("""
+Please select an option from the following menu:
+  -------------------------------------------------------------------------------
+  | 1.  Add New Transaction          |   2.  Remove Transaction                 |
+  | 3.  Update Transaction           |   4.  View All Transactions              |
+  | 5.  View Transaction by Id       |   6.  View Transactions by national id   |
+  | 7.  View Transactions by Book Id |   8.  Back to Main Menu                  |
+  -------------------------------------------------------------------------------
+                """)
+              try {
+                var choice = readLine(
+                  "Enter number corresponding to your choice: "
+                ).toInt
+
+                choice match {
+                  // 1. Add New Transaction
+                  case 1 =>
+                    var userNationalId = readLine("Enter national id of user: ")
+                    var bookId = readLine("Enter Id of book: ").toInt
+                    var checkoutDate = readLine("Enter checkout date of book: ")
+                    var dueDate = readLine("Enter due date of book: ")
+                    var returnDate = readLine("Enter return date of book: ")
+                    var fineAmount = readLine("Enter fine amount of book: ").toDouble
+                    transactionService.addTransaction(userNationalId, bookId, checkoutDate, dueDate, returnDate, fineAmount)
+
+                  // 2. Remove Transaction
+                  case 2 =>
+                    var transactionId = readLine(
+                      "Enter Id of transaction to be removed: "
+                    ).toInt
+                    transactionService.removeTransaction(id = transactionId)
+
+                  // 3. Update Transaction
+                  case 3 =>
+                    var transactionId = readLine(
+                      "Enter Id of transaction to be updated: "
+                    ).toInt
+                    var userNationalId = readLine("Enter national id of user: ")
+                    var bookId = readLine("Enter Id of book: ").toInt
+                    var checkoutDate = readLine("Enter checkout date of book: ")
+                    var dueDate = readLine("Enter due date of book: ")
+                    var returnDate = readLine("Enter return date of book: ")
+                    var fineAmount = readLine("Enter fine amount of book: ").toDouble
+                    transactionService.updateTransaction(transactionId, userNationalId, bookId, checkoutDate, dueDate, returnDate, fineAmount)
+
+                  // 4. View All Transactions
+                  case 4 =>
+                    transactionService.getAllTransactions()
+
+                  // 5. View Transaction by Id
+                  case 5 =>
+                    var transactionId = readLine(
+                      "Enter Id of transaction to be viewed: "
+                    ).toInt
+                    transactionService.getTransactionById(id = transactionId)
+
+                  // 6. View Transactions by national id
+                  case 6 =>
+                    var userNationalId = readLine(
+                      "Enter national id of user to be viewed: "
+                    )
+                    transactionService.getTransactionByUserNationalId(userNationalId)
+
+                  // 7. View Transactions by Book Id
+                  case 7 =>
+                    var bookId = readLine(
+                      "Enter Id of book to be viewed: "
+                    ).toInt
+                    transactionService.getTransactionByBookId(bookId)
+
+                  // 8. Back to Main Menu
+                  case 8 =>
+                    manageTransactions = false
+
+                  case _ =>
+                    println("Invalid choice. Please try again.")
+                }
+              } catch {
+                case a: NumberFormatException =>
+                  println(s"NumberFormatException occurred. Try again!")
+              }
+            }
+
           // 12. Exit
           case 12 =>
             println("Exiting...")
@@ -244,3 +332,16 @@ Please select an option from the following menu:
 //   )
 // case _ =>
 //   println("Invalid choice. Please try again.")
+
+// Please select an option from the following menu:
+//  -----------------------------------------------------------------
+// | 1.  Managing users              |   2.  Managing books          |
+// | 3.  Managing transactions       |   4.  Managing fines          |
+// | 3.  Report Generation           |   4.  Manage Library Resources|
+// | 5.  Handle Book Checkout        |   6.  Manage Users Accounts    |
+// | 7.  Create Reports              |   8.  Monitor Library Usage   |
+// | 9.  View Available Books        |   10. View Borrowed Books     |
+// | 11. Search for Books            |   12. Exit                    |
+//  -----------------------------------------------------------------
+// """
+// """
