@@ -3,9 +3,6 @@ import scala.io.StdIn.readLine
 object Main {
   def main(args: Array[String]): Unit = {
 
-    // Instantiate the LibraryService
-    val libraryService = LibraryService()
-
     var continue = true
     println("Welcome to Library Management System!")
     while (continue) {
@@ -30,16 +27,11 @@ Please select an option from the following menu:
         choice match {
           // 1.  Register New User
           case 1 =>
-            var name = readLine("Enter customer name: ")
-            var balance = -1
-            while (balance < 0) {
-              balance = readLine(
-                "Enter initial account balance(>=0): "
-              ).toInt
-              if (balance < 0)
-                println("Account balance can not be negative.")
-            }
-            libraryService.addCustomer(name, balance)
+            var name = readLine("Enter name of customer: ")
+            var email = readLine("Enter email of customer: ")
+            var password = readLine("Enter password of customer: ")
+            libraryService.addUser(name, email, password)
+
           // // 2.  Check In
           // case 2 =>
           //   var customerId = readLine(
@@ -97,17 +89,13 @@ Please select an option from the following menu:
           //   var studentId = readLine(
           //     "Enter Roll.No of student to be removed : "
           //   )
-          case _ =>
-            println("Invalid choice. Please try again.")
+          // case _ =>
+          //   println("Invalid choice. Please try again.")
 
         }
       } catch {
         case a: NumberFormatException =>
           println(s"NumberFormatException occured. Try again!")
-        case _ =>
-          println(
-            "Invalid choice! Please choose an options from given list only."
-          )
       }
     }
   }
