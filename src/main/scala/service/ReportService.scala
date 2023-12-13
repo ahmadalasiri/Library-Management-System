@@ -21,7 +21,7 @@ import scala.concurrent.{Future, Await}
 //    3.5- transactions that are returned early
 //    3.6- transactions that are returned with fine
 
-object reportService {
+class ReportService {
   import slick.jdbc.PostgresProfile.api._
 
   val currentDir = new java.io.File(".").getCanonicalPath

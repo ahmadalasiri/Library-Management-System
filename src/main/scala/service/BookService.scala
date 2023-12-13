@@ -1,7 +1,7 @@
 import scala.concurrent.{Future, Await}
 import java.sql.Timestamp
 
-object bookService {
+class BookService {
   import slick.jdbc.PostgresProfile.api._
 
   def addBook(title: String, author: String, isbn: String, availability: Boolean, location: String): Unit = {

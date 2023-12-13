@@ -1,7 +1,7 @@
 import scala.concurrent.{Future, Await}
 import java.sql.Timestamp
 
-object userService {
+class UserService {
 
   import slick.jdbc.PostgresProfile.api._
 
