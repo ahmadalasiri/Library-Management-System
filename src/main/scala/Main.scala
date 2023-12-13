@@ -6,6 +6,11 @@ import ch.qos.logback.classic.{Level, LoggerContext}
 
 object Main {
 
+  // val userService = new UserService()
+  // val bookService = new BookService()
+  val transactionService = new TransactionService()
+  // val reportService = new ReportService()
+
   val loggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
   // loggerContext.getLogger("org.slf4j.impl.StaticLoggerBinder").setLevel(Level.INFO)
   loggerContext.stop()

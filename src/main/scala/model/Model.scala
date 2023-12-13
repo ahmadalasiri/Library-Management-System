@@ -21,8 +21,9 @@ case class Transaction(
     bookId: Long,
     checkoutDate: Timestamp,
     dueDate: Timestamp,
-    returnDate: Timestamp,
-    fineAmount: Double
+    // returnDate is nullable so we use Option[Timestamp] instead of Timestamp
+    returnDate: Option[Timestamp],
+    fineAmount: Double = 0.0
 )
 
 object SlickTables {
@@ -67,7 +68,9 @@ object SlickTables {
     def bookId = column[Long]("book_id")
     def checkoutDate = column[Timestamp]("checkout_date")
     def dueDate = column[Timestamp]("due_date")
+    // returnDate is nullable so we use Option[Timestamp] instead of Timestamp
     def returnDate = column[Timestamp]("return_date")
+    // fineAmount is nullable so we use Option[Double] instead of Double
     def fineAmount = column[Double]("fine_amount")
 
     def userNationalIdFK = foreignKey("user_national_id_fk", userNationalId, userTable)(
@@ -82,7 +85,7 @@ object SlickTables {
       onDelete = ForeignKeyAction.Cascade
     )
 
-    override def * = (id, userNationalId, bookId, checkoutDate, dueDate, returnDate, fineAmount) <> (Transaction.tupled, Transaction.unapply)
+    override def * = (id, userNationalId, bookId, checkoutDate, dueDate, returnDate.?, fineAmount) <> (Transaction.tupled, Transaction.unapply)
 
   }
 
