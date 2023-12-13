@@ -24,6 +24,15 @@ import scala.concurrent.{Future, Await}
 object reportService {
   import slick.jdbc.PostgresProfile.api._
 
+  val currentDir = new java.io.File(".").getCanonicalPath
+//   println(currentDir)
+  val reportsDir = new java.io.File(s"$currentDir/reports")
+//   println(reportsDir)
+  // Create the reports directory if it doesn't exist
+  if (!reportsDir.exists()) {
+    reportsDir.mkdir()
+  }
+
   //  generate user report
   def generateUserReport(): Unit = {
     //  get all users
@@ -37,7 +46,7 @@ object reportService {
     if (result.isEmpty) println("No users found")
     else {
       //  create a csv file
-      val pw = new java.io.PrintWriter(new java.io.File("../reports/user_report.csv"))
+      val pw = new java.io.PrintWriter(new java.io.File("reports/user_report.csv"))
       //  write the header of the csv file
       pw.write("national_id,name,created_at\n")
       //  write the data of the csv file
@@ -61,7 +70,7 @@ object reportService {
     if (result.isEmpty) println("No books found")
     else {
       //  create a csv file
-      val pw = new java.io.PrintWriter(new java.io.File("../reports/book_report.csv"))
+      val pw = new java.io.PrintWriter(new java.io.File("reports/book_report.csv"))
       //  write the header of the csv file
       pw.write("id,title,author,isbn,availability,location,created_at\n")
       //  write the data of the csv file
@@ -87,7 +96,7 @@ object reportService {
     if (result.isEmpty) println("No transactions found")
     else {
       //  create a csv file
-      val pw = new java.io.PrintWriter(new java.io.File("../reports/transaction_report.csv"))
+      val pw = new java.io.PrintWriter(new java.io.File("reports/transaction_report.csv"))
       //  write the header of the csv file
       pw.write("id,user_national_id,book_id,checkout_date,due_date,return_date,fine_amount\n")
       //  write the data of the csv file
