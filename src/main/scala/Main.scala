@@ -18,16 +18,11 @@ object Main {
       println(
         """
 Please select an option from the following menu:
- -----------------------------------------------------------------
-| 1.  Managing users              |   2.  Managing books          |
-| 3.  Managing transactions       |   4.  Report Generation       |
-| 4.  Managing fines          |
-| 3.  Report Generation           |   4.  Manage Library Resources|
-| 5.  Handle Book Checkout        |   6.  Manage Users Accounts    |
-| 7.  Create Reports              |   8.  Monitor Library Usage   |
-| 9.  View Available Books        |   10. View Borrowed Books     |
-| 11. Search for Books            |   12. Exit                    |
- -----------------------------------------------------------------
+  -----------------------------------------------------------------
+  | 1.  Manage Users              |   2.  Manage Books             |
+  | 3.  Manage Transactions       |   4.  Report Generation        |
+  | 5. Exit                      |                                |
+  -----------------------------------------------------------------
 """
       )
 
@@ -311,8 +306,8 @@ Please select an option from the following menu:
               }
             }
 
-          // 12. Exit
-          case 12 =>
+          // 5. Exit
+          case 5 =>
             println("Exiting...")
             continue = false
 
@@ -327,66 +322,6 @@ Please select an option from the following menu:
   }
 }
 
-// // 2.  Check In
-// case 2 =>
-//   var customerId = readLine(
-//     "Enter Id of customer to be removed: "
-//   ).toInt
-//   userService.removeCustomer(id = customerId)
-// // 3.  Report Generation
-// case 3 =>
-//   var name = readLine("Enter name of student: ")
-//   var rollNo = readLine("Enter Roll.No of student: ")
-//   var batch = readLine("Enter batch of student: ")
-//   userService.addStudent(name, rollNo, batch)
-// // 4.  Manage Library Resources
-// case 4 =>
-//   var studentId = readLine(
-//     "Enter Roll.No of student to be removed : "
-//   )
-// // 5.  Handle Book Checkout
-// case 5 =>
-//   var studentId = readLine(
-//     "Enter Roll.No of student to be removed : "
-//   )
-// // 6.  Manage User Accounts
-// case 6 =>
-//   var studentId = readLine(
-//     "Enter Roll.No of student to be removed : "
-//   )
-// // 7.  Create Reports
-// case 7 =>
-//   var studentId = readLine(
-//     "Enter Roll.No of student to be removed : "
-//   )
-// // 8.  Monitor Library Usage
-// case 8 =>
-//   var studentId = readLine(
-//     "Enter Roll.No of student to be removed : "
-//   )
-// // 9.  View Available Books
-// case 9 =>
-//   var studentId = readLine(
-//     "Enter Roll.No of student to be removed : "
-//   )
-// // 10. View Borrowed Books
-// case 10 =>
-//   var studentId = readLine(
-//     "Enter Roll.No of student to be removed : "
-//   )
-// // 11. Search for Books
-// case 11 =>
-//   var studentId = readLine(
-//     "Enter Roll.No of student to be removed : "
-//   )
-// // 12. Exit
-// case 12 =>
-//   var studentId = readLine(
-//     "Enter Roll.No of student to be removed : "
-//   )
-// case _ =>
-//   println("Invalid choice. Please try again.")
-
 // Please select an option from the following menu:
 //  -----------------------------------------------------------------
 // | 1.  Managing users              |   2.  Managing books          |
@@ -395,7 +330,7 @@ Please select an option from the following menu:
 // | 5.  Handle Book Checkout        |   6.  Manage Users Accounts    |
 // | 7.  Create Reports              |   8.  Monitor Library Usage   |
 // | 9.  View Available Books        |   10. View Borrowed Books     |
-// | 11. Search for Books            |   12. Exit                    |
+// | 11. Search for Books            |   5. Exit                    |
 //  -----------------------------------------------------------------
 // """
 // """
