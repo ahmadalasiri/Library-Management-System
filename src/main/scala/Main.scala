@@ -199,7 +199,7 @@ Please select an option from the following menu:
                     val dueTimestamp = Timestamp.valueOf(dueDate)
                     val returnTimestamp = Timestamp.valueOf(returnDate)
 
-                    transactionService.addTransaction(userNationalId, bookId, checkoutTimestamp, dueTimestamp, returnTimestamp, fineAmount)
+                    transactionService.addTransaction(userNationalId, bookId, checkoutTimestamp, dueTimestamp)
 
                   // 2. Remove Transaction
                   case 2 =>
