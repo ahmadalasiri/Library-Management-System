@@ -111,4 +111,72 @@ class ReportService {
     }
 
   }
+  //    3.6- transactions that are returned with fine
+  def generateFineReport(): Unit = {
+    //  get all transactions
+    import slick.lifted.CanBeQueryCondition
+    import slick.lifted.Rep
+
+    import slick.lifted.CanBeQueryCondition
+    import slick.lifted.Rep
+
+    val queryDescription = SlickTables.transactionTable.filter((t: SlickTables.TransactionTable) => t.fineAmount > 0.0)
+    val futuredResult = Connection.db.run(queryDescription.result)
+    val result = Await.result(
+      futuredResult,
+      scala.concurrent.duration.Duration.Inf
+    )
+    //  if no transactions found
+    if (result.isEmpty) println("No transactions found")
+    else {
+      //  create a csv file
+      val pw = new java.io.PrintWriter(new java.io.File("reports/transaction_report_returned_with_fine.csv"))
+      //  write the header of the csv file
+      pw.write("id,user_national_id,book_id,checkout_date,due_date,return_date,fine_amount\n")
+      //  write the data of the csv file
+      result.foreach(transaction =>
+        pw.write(
+          transaction.id + "," + transaction.userNationalId + "," + transaction.bookId + "," + transaction.checkoutDate + "," + transaction.dueDate + "," + transaction.returnDate + "," + transaction.fineAmount + "\n"
+        )
+      )
+      //  close the csv file
+      pw.close()
+      println("Transaction report generated successfully")
+    }
+
+  }
+
+  //  | 5.  Generate Overdue Report       |   6.  Generate Usage Report  |
+  // | 7.  Generate Popular Book Report  |   8.  Back to Main Menu      |
+  // -------------------------------------------------------------
+  //  generate overdue report
+  def generateOverdueReport(): Unit = {
+    //  get all transactions
+//  t: SlickTables.TransactionTable) => t.returnDate > t.dueDate.asInstanceOf[Rep[Timestamp]])
+    val queryDescription = SlickTables.transactionTable.filter((t: SlickTables.TransactionTable) => t.returnDate > t.dueDate)
+    val futuredResult = Connection.db.run(queryDescription.result)
+    val result = Await.result(
+      futuredResult,
+      scala.concurrent.duration.Duration.Inf
+    )
+    //  if no transactions found
+    if (result.isEmpty) println("No transactions found")
+    else {
+      //  create a csv file
+      val pw = new java.io.PrintWriter(new java.io.File("reports/overdue_report.csv"))
+      //  write the header of the csv file
+      pw.write("id,user_national_id,book_id,checkout_date,due_date,return_date,fine_amount\n")
+      //  write the data of the csv file
+      result.foreach(transaction =>
+        pw.write(
+          transaction.id + "," + transaction.userNationalId + "," + transaction.bookId + "," + transaction.checkoutDate + "," + transaction.dueDate + "," + transaction.returnDate + "," + transaction.fineAmount + "\n"
+        )
+      )
+      //  close the csv file
+      pw.close()
+      println("Overdue report generated successfully")
+    }
+
+  }
+
 }

@@ -335,10 +335,11 @@ Please select an option from the following menu:
               while (reportGeneration) {
                 println("""
 Please select an option from the following menu:
-  -------------------------------------------------------------
+  -------------------------------------------------------------------
   | 1.  Generate User Report          |   2.  Generate Book Report   |
-  | 3.  Generate Transaction Report   |   4.  Back to Main Menu      |
-  -------------------------------------------------------------
+  | 3.  Generate Transaction Report   |   4.  Generate Fine Report   |
+  | 5.  Generate Overdue Report       |   6.  Back to Main Menu      |
+  -------------------------------------------------------------------
                 """)
                 try {
                   var choice = readLine(
@@ -357,9 +358,14 @@ Please select an option from the following menu:
                     // 3. Generate Transaction Report
                     case 3 =>
                       reportService.generateTransactionReport()
-
-                    // 4. Back to Main Menu
                     case 4 =>
+                      reportService.generateFineReport()
+                    // 5. Generate Overdue Report
+                    case 5 =>
+                      reportService.generateOverdueReport()
+
+                    // 6. Back to Main Menu
+                    case 6 =>
                       reportGeneration = false
 
                     case _ =>
