@@ -21,7 +21,7 @@ Please select an option from the following menu:
   -----------------------------------------------------------------
   | 1.  Manage Users              |   2.  Manage Books             |
   | 3.  Manage Transactions       |   4.  Report Generation        |
-  | 5. Exit                      |                                |
+  | 5.  Exit                      |                                |
   -----------------------------------------------------------------
 """
       )
@@ -34,10 +34,12 @@ Please select an option from the following menu:
         choice match {
           // 1. Register New User
           case 1 =>
-            var manageUsers = true
-            while (manageUsers) {
-              println(
-                """
+            try {
+
+              var manageUsers = true
+              while (manageUsers) {
+                println(
+                  """
 Please select an option from the following menu:
   -----------------------------------------------------------------
   | 1.  Add New User           |   2.  Remove User                |
@@ -45,63 +47,68 @@ Please select an option from the following menu:
   | 5.  View User by Id        |   6. Back to Main Menu           |
   -----------------------------------------------------------------
 """
-              )
-              try {
-                var choice = readLine(
-                  "Enter number corresponding to your choice: "
-                ).toInt
+                )
+                try {
+                  var choice = readLine(
+                    "Enter number corresponding to your choice: "
+                  ).toInt
 
-                choice match {
-                  // 1. Add New User
-                  case 1 =>
-                    var nationalId = readLine("Enter national id of user: ")
-                    var name = readLine("Enter name of user: ")
-                    userService.addUser(nationalId, name)
+                  choice match {
+                    // 1. Add New User
+                    case 1 =>
+                      var nationalId = readLine("Enter national id of user: ")
+                      var name = readLine("Enter name of user: ")
+                      userService.addUser(nationalId, name)
 
-                  // // 2. Remove User
-                  case 2 =>
-                    var nationalId = readLine(
-                      "Enter national id of user to be removed: "
-                    )
-                    userService.removeUser(nationalId)
+                    // // 2. Remove User
+                    case 2 =>
+                      var nationalId = readLine(
+                        "Enter national id of user to be removed: "
+                      )
+                      userService.removeUser(nationalId)
 
-                  // // 3. Update User
-                  case 3 =>
-                    var nationalId = readLine(
-                      "Enter national id of user to be updated: "
-                    )
-                    var name = readLine("Enter name of user: ")
-                    userService.updateUser(nationalId, name)
+                    // // 3. Update User
+                    case 3 =>
+                      var nationalId = readLine(
+                        "Enter national id of user to be updated: "
+                      )
+                      var name = readLine("Enter name of user: ")
+                      userService.updateUser(nationalId, name)
 
-                  // // 4. View All Users
-                  case 4 =>
-                    userService.getAllUsers()
+                    // // 4. View All Users
+                    case 4 =>
+                      userService.getAllUsers()
 
-                  // // 5. View User by Id
-                  case 5 =>
-                    var nationalId = readLine(
-                      "Enter national id of user to be viewed: "
-                    )
-                    userService.getUserByNationalId(nationalId)
+                    // // 5. View User by Id
+                    case 5 =>
+                      var nationalId = readLine(
+                        "Enter national id of user to be viewed: "
+                      )
+                      userService.getUserByNationalId(nationalId)
 
-                  // // 6. Back to Main Menu
-                  case 6 =>
-                    manageUsers = false
+                    // // 6. Back to Main Menu
+                    case 6 =>
+                      manageUsers = false
 
-                  case _ =>
-                    println("Invalid choice. Please try again.")
+                    case _ =>
+                      println("Invalid choice. Please try again.")
+                  }
+                } catch {
+                  case a: NumberFormatException =>
+                    println(s"NumberFormatException occurred. Try again!")
                 }
-              } catch {
-                case a: NumberFormatException =>
-                  println(s"NumberFormatException occurred. Try again!")
               }
+            } catch {
+              case e: Exception =>
+                println(s"An unexpected error occurred: ${e.getMessage}")
             }
-
           // 2. Manage Books
           case 2 =>
-            var manageBooks = true
-            while (manageBooks) {
-              println("""
+            try {
+
+              var manageBooks = true
+              while (manageBooks) {
+                println("""
 Please select an option from the following menu:
   -----------------------------------------------------------------
   | 1.  Add New Book           |   2.  Remove Book                | 
@@ -109,69 +116,76 @@ Please select an option from the following menu:
   | 5.  View Book by Id        |   6. Back to Main Menu           |
   -----------------------------------------------------------------
                 """)
-              try {
-                var choice = readLine(
-                  "Enter number corresponding to your choice: "
-                ).toInt
+                try {
+                  var choice = readLine(
+                    "Enter number corresponding to your choice: "
+                  ).toInt
 
-                choice match {
-                  // 1. Add New Book
-                  case 1 =>
-                    var title = readLine("Enter title of book: ")
-                    var author = readLine("Enter author of book: ")
-                    var isbn = readLine("Enter isbn of book: ")
-                    var availability = readLine("Enter availability of book: ").toBoolean
-                    var location = readLine("Enter location of book: ")
-                    bookService.addBook(title, author, isbn, availability, location)
+                  choice match {
+                    // 1. Add New Book
+                    case 1 =>
+                      var title = readLine("Enter title of book: ")
+                      var author = readLine("Enter author of book: ")
+                      var isbn = readLine("Enter isbn of book: ")
+                      var availability = readLine("Enter availability of book: ").toBoolean
+                      var location = readLine("Enter location of book: ")
+                      bookService.addBook(title, author, isbn, availability, location)
 
-                  // 2. Remove Book
-                  case 2 =>
-                    var bookId = readLine(
-                      "Enter Id of book to be removed: "
-                    ).toInt
-                    bookService.removeBook(id = bookId)
+                    // 2. Remove Book
+                    case 2 =>
+                      var bookId = readLine(
+                        "Enter Id of book to be removed: "
+                      ).toInt
+                      bookService.removeBook(id = bookId)
 
-                  // 3. Update Book
-                  case 3 =>
-                    var bookId = readLine(
-                      "Enter Id of book to be updated: "
-                    ).toInt
-                    var title = readLine("Enter title of book: ")
-                    var author = readLine("Enter author of book: ")
-                    var isbn = readLine("Enter isbn of book: ")
-                    var availability = readLine("Enter availability of book: ").toBoolean
-                    var location = readLine("Enter location of book: ")
-                    bookService.updateBook(bookId, title, author, isbn, availability, location)
+                    // 3. Update Book
+                    case 3 =>
+                      var bookId = readLine(
+                        "Enter Id of book to be updated: "
+                      ).toInt
+                      var title = readLine("Enter title of book: ")
+                      var author = readLine("Enter author of book: ")
+                      var isbn = readLine("Enter isbn of book: ")
+                      var availability = readLine("Enter availability of book: ").toBoolean
+                      var location = readLine("Enter location of book: ")
+                      bookService.updateBook(bookId, title, author, isbn, availability, location)
 
-                  // 4. View All Books
-                  case 4 =>
-                    bookService.getAllBooks()
+                    // 4. View All Books
+                    case 4 =>
+                      bookService.getAllBooks()
 
-                  // 5. View Book by Id
-                  case 5 =>
-                    var bookId = readLine(
-                      "Enter Id of book to be viewed: "
-                    ).toInt
-                    bookService.getBookById(id = bookId)
+                    // 5. View Book by Id
+                    case 5 =>
+                      var bookId = readLine(
+                        "Enter Id of book to be viewed: "
+                      ).toInt
+                      bookService.getBookById(id = bookId)
 
-                  // 6. Back to Main Menu
-                  case 6 =>
-                    manageBooks = false
+                    // 6. Back to Main Menu
+                    case 6 =>
+                      manageBooks = false
 
-                  case _ =>
-                    println("Invalid choice. Please try again.")
+                    case _ =>
+                      println("Invalid choice. Please try again.")
+                  }
+                } catch {
+                  case a: NumberFormatException =>
+                    println(s"NumberFormatException occurred. Try again!")
                 }
-              } catch {
-                case a: NumberFormatException =>
-                  println(s"NumberFormatException occurred. Try again!")
               }
+
+            } catch {
+              case e: Exception =>
+                println(s"An unexpected error occurred: ${e.getMessage}")
             }
 
           // 3. Manage Transactions
           case 3 =>
-            var manageTransactions = true
-            while (manageTransactions) {
-              println("""
+            try {
+
+              var manageTransactions = true
+              while (manageTransactions) {
+                println("""
 Please select an option from the following menu:
   -------------------------------------------------------------------------------
   | 1.  Add New Transaction          |   2.  Remove Transaction                 |
@@ -180,132 +194,181 @@ Please select an option from the following menu:
   | 7.  View Transactions by Book Id |   8.  Back to Main Menu                  |
   -------------------------------------------------------------------------------
                 """)
-              try {
-                var choice = readLine(
-                  "Enter number corresponding to your choice: "
-                ).toInt
+                try {
+                  var choice = readLine(
+                    "Enter number corresponding to your choice: "
+                  ).toInt
 
-                choice match {
-                  // 1. Add New Transaction
-                  case 1 =>
-                    var userNationalId = readLine("Enter national id of user: ")
-                    var bookId = readLine("Enter Id of book: ").toInt
-                    var checkoutDate = readLine("Enter checkout date of book: ")
-                    var dueDate = readLine("Enter due date of book: ")
-                    var returnDate = readLine("Enter return date of book: ")
-                    var fineAmount = readLine("Enter fine amount of book: ").toDouble
+                  choice match {
+                    // 1. Add New Transaction
+                    case 1 =>
+                      try {
+                        var userNationalId = readLine("Enter national id of user: ")
+                        var bookId = readLine("Enter Id of book: ").toInt
+                        var checkoutDate = readLine("Enter checkout date of book: ")
+                        var dueDate = readLine("Enter due date of book: ")
 
-                    val checkoutTimestamp = Timestamp.valueOf(checkoutDate)
-                    val dueTimestamp = Timestamp.valueOf(dueDate)
-                    val returnTimestamp = Timestamp.valueOf(returnDate)
+                        val checkoutTimestamp = Timestamp.valueOf(checkoutDate)
+                        val dueTimestamp = Timestamp.valueOf(dueDate)
 
-                    transactionService.addTransaction(userNationalId, bookId, checkoutTimestamp, dueTimestamp)
+                        transactionService.addTransaction(userNationalId, bookId, checkoutTimestamp, dueTimestamp)
+                      } catch {
+                        case e: IllegalArgumentException =>
+                          println("Error: Invalid timestamp format. Please enter timestamps in the format yyyy-mm-dd hh:mm:ss[.fffffffff]")
+                        case e: Exception =>
+                          println(s"An unexpected error occurred: ${e.getMessage}")
+                      }
 
-                  // 2. Remove Transaction
-                  case 2 =>
-                    var transactionId = readLine(
-                      "Enter Id of transaction to be removed: "
-                    ).toInt
-                    transactionService.removeTransaction(id = transactionId)
+                    // 2. Remove Transaction
+                    case 2 =>
+                      try {
 
-                  // 3. Update Transaction
-                  case 3 =>
-                    var transactionId = readLine(
-                      "Enter Id of transaction to be updated: "
-                    ).toInt
-                    var userNationalId = readLine("Enter national id of user: ")
-                    var bookId = readLine("Enter Id of book: ").toInt
-                    var checkoutDate = readLine("Enter checkout date of book: ")
-                    var dueDate = readLine("Enter due date of book: ")
-                    var returnDate = readLine("Enter return date of book: ")
-                    var fineAmount = readLine("Enter fine amount of book: ").toDouble
+                        var transactionId = readLine(
+                          "Enter Id of transaction to be removed: "
+                        ).toInt
+                        transactionService.removeTransaction(id = transactionId)
+                      } catch {
+                        case e: Exception =>
+                          println(s"An unexpected error occurred: ${e.getMessage}")
+                      }
 
-                    val checkoutTimestamp = Timestamp.valueOf(checkoutDate)
-                    val dueTimestamp = Timestamp.valueOf(dueDate)
-                    val returnTimestamp = Timestamp.valueOf(returnDate)
+                    // 3. Update Transaction
+                    case 3 =>
+                      try {
 
-                    transactionService.updateTransaction(transactionId, userNationalId, bookId, checkoutTimestamp, dueTimestamp, returnTimestamp, fineAmount)
+                        var transactionId = readLine(
+                          "Enter Id of transaction to be updated: "
+                        ).toInt
+                        var userNationalId = readLine("Enter national id of user: ")
+                        var bookId = readLine("Enter Id of book: ").toInt
+                        var checkoutDate = readLine("Enter checkout date of book: ")
+                        var dueDate = readLine("Enter due date of book: ")
+                        var returnDate = readLine("Enter return date of book: ")
+                        var fineAmount = readLine("Enter fine amount of book: ").toDouble
 
-                  // 4. View All Transactions
-                  case 4 =>
-                    transactionService.getAllTransactions()
+                        val checkoutTimestamp = Timestamp.valueOf(checkoutDate)
+                        val dueTimestamp = Timestamp.valueOf(dueDate)
+                        val returnTimestamp = Timestamp.valueOf(returnDate)
 
-                  // 5. View Transaction by Id
-                  case 5 =>
-                    var transactionId = readLine(
-                      "Enter Id of transaction to be viewed: "
-                    ).toInt
-                    transactionService.getTransactionById(id = transactionId)
+                        transactionService.updateTransaction(transactionId, userNationalId, bookId, checkoutTimestamp, dueTimestamp, returnTimestamp, fineAmount)
+                      } catch {
+                        case e: IllegalArgumentException =>
+                          println("Error: Invalid timestamp format. Please enter timestamps in the format yyyy-mm-dd hh:mm:ss[.fffffffff]")
+                        case e: Exception =>
+                          println(s"An unexpected error occurred: ${e.getMessage}")
+                      }
+                    // 4. View All Transactions
+                    case 4 =>
+                      try {
 
-                  // 6. View Transactions by national id
-                  case 6 =>
-                    var userNationalId = readLine(
-                      "Enter national id of user to be viewed: "
-                    )
-                    transactionService.getTransactionByUserNationalId(userNationalId)
+                        transactionService.getAllTransactions()
+                      } catch {
+                        case e: Exception =>
+                          println(s"An unexpected error occurred: ${e.getMessage}")
+                      }
 
-                  // 7. View Transactions by Book Id
-                  case 7 =>
-                    var bookId = readLine(
-                      "Enter Id of book to be viewed: "
-                    ).toInt
-                    transactionService.getTransactionByBookId(bookId)
+                    // 5. View Transaction by Id
+                    case 5 =>
+                      try {
 
-                  // 8. Back to Main Menu
-                  case 8 =>
-                    manageTransactions = false
+                        var transactionId = readLine(
+                          "Enter Id of transaction to be viewed: "
+                        ).toInt
+                        transactionService.getTransactionById(id = transactionId)
+                      } catch {
+                        case e: Exception =>
+                          println(s"An unexpected error occurred: ${e.getMessage}")
+                      }
 
-                  case _ =>
-                    println("Invalid choice. Please try again.")
+                    // 6. View Transactions by national id
+                    case 6 =>
+                      try {
+
+                        var userNationalId = readLine(
+                          "Enter national id of user to be viewed: "
+                        )
+                        transactionService.getTransactionByUserNationalId(userNationalId)
+                      } catch {
+                        case e: Exception =>
+                          println(s"An unexpected error occurred: ${e.getMessage}")
+                      }
+
+                    // 7. View Transactions by Book Id
+                    case 7 =>
+                      try {
+
+                        var bookId = readLine(
+                          "Enter Id of book to be viewed: "
+                        ).toInt
+                        transactionService.getTransactionByBookId(bookId)
+                      } catch {
+                        case e: Exception =>
+                          println(s"An unexpected error occurred: ${e.getMessage}")
+                      }
+                    // 8. Back to Main Menu
+                    case 8 =>
+                      manageTransactions = false
+
+                    case _ =>
+                      println("Invalid choice. Please try again.")
+                  }
+                } catch {
+                  case a: NumberFormatException =>
+                    println(s"NumberFormatException occurred. Try again!")
                 }
-              } catch {
-                case a: NumberFormatException =>
-                  println(s"NumberFormatException occurred. Try again!")
               }
+            } catch {
+              case e: Exception =>
+                println(s"An unexpected error occurred: ${e.getMessage}")
             }
 
           // 4. Report Generation
           case 4 =>
-            var reportGeneration = true
-            while (reportGeneration) {
-              println("""
+            try {
+
+              var reportGeneration = true
+              while (reportGeneration) {
+                println("""
 Please select an option from the following menu:
   -------------------------------------------------------------
   | 1.  Generate User Report          |   2.  Generate Book Report   |
   | 3.  Generate Transaction Report   |   4.  Back to Main Menu      |
   -------------------------------------------------------------
                 """)
-              try {
-                var choice = readLine(
-                  "Enter number corresponding to your choice: "
-                ).toInt
+                try {
+                  var choice = readLine(
+                    "Enter number corresponding to your choice: "
+                  ).toInt
 
-                choice match {
-                  // 1. Generate User Report
-                  case 1 =>
-                    reportService.generateUserReport()
+                  choice match {
+                    // 1. Generate User Report
+                    case 1 =>
+                      reportService.generateUserReport()
 
-                  // 2. Generate Book Report
-                  case 2 =>
-                    reportService.generateBookReport()
+                    // 2. Generate Book Report
+                    case 2 =>
+                      reportService.generateBookReport()
 
-                  // 3. Generate Transaction Report
-                  case 3 =>
-                    reportService.generateTransactionReport()
+                    // 3. Generate Transaction Report
+                    case 3 =>
+                      reportService.generateTransactionReport()
 
-                  // 4. Back to Main Menu
-                  case 4 =>
-                    reportGeneration = false
+                    // 4. Back to Main Menu
+                    case 4 =>
+                      reportGeneration = false
 
-                  case _ =>
-                    println("Invalid choice. Please try again.")
+                    case _ =>
+                      println("Invalid choice. Please try again.")
+                  }
+                } catch {
+                  case a: NumberFormatException =>
+                    println(s"NumberFormatException occurred. Try again!")
                 }
-              } catch {
-                case a: NumberFormatException =>
-                  println(s"NumberFormatException occurred. Try again!")
               }
+            } catch {
+              case e: Exception =>
+                println(s"An unexpected error occurred: ${e.getMessage}")
             }
-
           // 5. Exit
           case 5 =>
             println("Exiting...")
