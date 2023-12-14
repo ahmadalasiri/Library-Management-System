@@ -18,6 +18,8 @@ class BookService {
 
   def removeBook(id: Long): Unit = {
     val queryDescription = SlickTables.bookTable.filter(_.id === id).delete
+    // delete all
+    // val queryDescription = SlickTables.bookTable.delete
     val futuredResult = Connection.db.run(queryDescription)
     val result = Await.result(
       futuredResult,

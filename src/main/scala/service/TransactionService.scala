@@ -18,20 +18,18 @@ class TransactionService {
   }
 
   def removeTransaction(id: Long): Unit = {
-    try {
 
-      val queryDescription = SlickTables.transactionTable.filter(_.id === id).delete
-      val futuredResult = Connection.db.run(queryDescription)
-      val result = Await.result(
-        futuredResult,
-        scala.concurrent.duration.Duration.Inf
-      )
-      if (result == 0) println("No transaction found")
-      else println("Transaction removed successfully")
-    } catch {
-      case e: Exception =>
-        println(s"An unexpected error occurred: ${e.getMessage}")
-    }
+    val queryDescription = SlickTables.transactionTable.filter(_.id === id).delete
+    // delete all
+    // val queryDescription = SlickTables.transactionTable.delete
+    val futuredResult = Connection.db.run(queryDescription)
+    val result = Await.result(
+      futuredResult,
+      scala.concurrent.duration.Duration.Inf
+    )
+    if (result == 0) println("No transaction found")
+    else println("Transaction removed successfully")
+
   }
 
   def updateTransaction(id: Long, userNationalId: String, bookId: Long, checkoutDate: Timestamp, dueDate: Timestamp, returnDate: Timestamp, fineAmount: Double): Unit = {

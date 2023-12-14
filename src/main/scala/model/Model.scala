@@ -61,7 +61,7 @@ object SlickTables {
 
   }
 
-  class TransactionTable(tag: Tag) extends Table[Transaction](tag, Some("transactoins"), "Transaction") {
+  class TransactionTable(tag: Tag) extends Table[Transaction](tag, Some("transactions"), "Transaction") {
 
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def userNationalId = column[String]("user_national_id")

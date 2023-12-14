@@ -28,6 +28,8 @@ class UserService {
 
   def removeUser(nationalId: String): Unit = {
     val queryDescription = SlickTables.userTable.filter(_.nationalId === nationalId).delete
+    // delete all
+    // val queryDescription = SlickTables.userTable.delete
     val futuredResult = Connection.db.run(queryDescription)
     val result = Await.result(
       futuredResult,
