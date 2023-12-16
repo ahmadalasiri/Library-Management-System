@@ -4,12 +4,18 @@ import org.slf4j.LoggerFactory
 import java.sql.Timestamp
 import ch.qos.logback.classic.{Level, LoggerContext}
 
-object Main {
+import akka.actor.{ActorSystem, Props}
 
-  val userService = new UserService()
-  val bookService = new BookService()
-  val transactionService = new TransactionService()
-  val reportService = new ReportService()
+object ActorSystemManager {
+  val system: ActorSystem = ActorSystem("LibraryManagementSystem")
+
+  val userActor = system.actorOf(Props[UserActor], "userActor")
+  val bookActor = system.actorOf(Props[BookActor], "bookActor")
+  val transactionActor = system.actorOf(Props[TransactionActor], "transactionActor")
+  val reportActor = system.actorOf(Props[ReportActor], "reportActor")
+}
+
+object Main {
 
   val loggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
   // loggerContext.getLogger("org.slf4j.impl.StaticLoggerBinder").setLevel(Level.INFO)
@@ -63,14 +69,14 @@ Please select an option from the following menu:
                     case 1 =>
                       var nationalId = readLine("Enter national id of user: ")
                       var name = readLine("Enter name of user: ")
-                      userService.addUser(nationalId, name)
+                      ActorSystemManager.userActor ! AddUser(nationalId, name)
 
                     // // 2. Remove User
                     case 2 =>
                       var nationalId = readLine(
                         "Enter national id of user to be removed: "
                       )
-                      userService.removeUser(nationalId)
+                      ActorSystemManager.userActor ! RemoveUser(nationalId)
 
                     // // 3. Update User
                     case 3 =>
@@ -78,19 +84,18 @@ Please select an option from the following menu:
                         "Enter national id of user to be updated: "
                       )
                       var name = readLine("Enter name of user: ")
-                      userService.updateUser(nationalId, name)
-
+                      ActorSystemManager.userActor ! UpdateUser(nationalId, name)
                     // // 4. View All Users
                     case 4 =>
-                      userService.getAllUsers()
+                      // userService.getAllUsers()
+                      ActorSystemManager.userActor ! GetAllUsers()
 
                     // // 5. View User by Id
                     case 5 =>
                       var nationalId = readLine(
                         "Enter national id of user to be viewed: "
                       )
-                      userService.getUserByNationalId(nationalId)
-
+                      ActorSystemManager.userActor ! GetUserByNationalId(nationalId)
                     // // 6. Back to Main Menu
                     case 6 =>
                       manageUsers = false
@@ -134,15 +139,13 @@ Please select an option from the following menu:
                       var isbn = readLine("Enter isbn of book: ")
                       var availability = readLine("Enter availability of book: ").toBoolean
                       var location = readLine("Enter location of book: ")
-                      bookService.addBook(title, author, isbn, availability, location)
-
+                      ActorSystemManager.bookActor ! AddBook(title, author, isbn, availability, location)
                     // 2. Remove Book
                     case 2 =>
                       var bookId = readLine(
                         "Enter Id of book to be removed: "
                       ).toInt
-                      bookService.removeBook(id = bookId)
-
+                      ActorSystemManager.bookActor ! RemoveBook(id = bookId)
                     // 3. Update Book
                     case 3 =>
                       var bookId = readLine(
@@ -153,19 +156,16 @@ Please select an option from the following menu:
                       var isbn = readLine("Enter isbn of book: ")
                       var availability = readLine("Enter availability of book: ").toBoolean
                       var location = readLine("Enter location of book: ")
-                      bookService.updateBook(bookId, title, author, isbn, availability, location)
-
+                      ActorSystemManager.bookActor ! UpdateBook(bookId, title, author, isbn, availability, location)
                     // 4. View All Books
                     case 4 =>
-                      bookService.getAllBooks()
-
+                      ActorSystemManager.bookActor ! GetAllBooks()
                     // 5. View Book by Id
                     case 5 =>
                       var bookId = readLine(
                         "Enter Id of book to be viewed: "
                       ).toInt
-                      bookService.getBookById(id = bookId)
-
+                      ActorSystemManager.bookActor ! GetBookById(id = bookId)
                     // 6. Back to Main Menu
                     case 6 =>
                       manageBooks = false
@@ -215,8 +215,7 @@ Please select an option from the following menu:
 
                         val checkoutTimestamp = Timestamp.valueOf(checkoutDate)
                         val dueTimestamp = Timestamp.valueOf(dueDate)
-
-                        transactionService.addTransaction(userNationalId, bookId, checkoutTimestamp, dueTimestamp)
+                        ActorSystemManager.transactionActor ! AddTransaction(userNationalId, bookId, checkoutTimestamp, dueTimestamp)
                       } catch {
                         case e: IllegalArgumentException =>
                           println("Error: Invalid timestamp format. Please enter timestamps in the format yyyy-mm-dd hh:mm:ss[.fffffffff]")
@@ -231,7 +230,7 @@ Please select an option from the following menu:
                         var transactionId = readLine(
                           "Enter Id of transaction to be removed: "
                         ).toInt
-                        transactionService.removeTransaction(id = transactionId)
+                        ActorSystemManager.transactionActor ! RemoveTransaction(id = transactionId)
                       } catch {
                         case e: Exception =>
                           println(s"An unexpected error occurred: ${e.getMessage}")
@@ -255,7 +254,8 @@ Please select an option from the following menu:
                         val dueTimestamp = Timestamp.valueOf(dueDate)
                         val returnTimestamp = Timestamp.valueOf(returnDate)
 
-                        transactionService.updateTransaction(transactionId, userNationalId, bookId, checkoutTimestamp, dueTimestamp, returnTimestamp, fineAmount)
+                        ActorSystemManager.transactionActor ! UpdateTransaction(transactionId, userNationalId, bookId, checkoutTimestamp, dueTimestamp, returnTimestamp, fineAmount)
+
                       } catch {
                         case e: IllegalArgumentException =>
                           println("Error: Invalid timestamp format. Please enter timestamps in the format yyyy-mm-dd hh:mm:ss[.fffffffff]")
@@ -266,7 +266,7 @@ Please select an option from the following menu:
                     case 4 =>
                       try {
 
-                        transactionService.getAllTransactions()
+                        ActorSystemManager.transactionActor ! GetAllTransactions()
                       } catch {
                         case e: Exception =>
                           println(s"An unexpected error occurred: ${e.getMessage}")
@@ -279,7 +279,8 @@ Please select an option from the following menu:
                         var transactionId = readLine(
                           "Enter Id of transaction to be viewed: "
                         ).toInt
-                        transactionService.getTransactionById(id = transactionId)
+                        ActorSystemManager.transactionActor ! GetTransactionById(id = transactionId)
+
                       } catch {
                         case e: Exception =>
                           println(s"An unexpected error occurred: ${e.getMessage}")
@@ -292,7 +293,7 @@ Please select an option from the following menu:
                         var userNationalId = readLine(
                           "Enter national id of user to be viewed: "
                         )
-                        transactionService.getTransactionByUserNationalId(userNationalId)
+                        ActorSystemManager.transactionActor ! GetTransactionByUserNationalId(userNationalId)
                       } catch {
                         case e: Exception =>
                           println(s"An unexpected error occurred: ${e.getMessage}")
@@ -305,7 +306,8 @@ Please select an option from the following menu:
                         var bookId = readLine(
                           "Enter Id of book to be viewed: "
                         ).toInt
-                        transactionService.getTransactionByBookId(bookId)
+
+                        ActorSystemManager.transactionActor ! GetTransactionByBookId(bookId)
                       } catch {
                         case e: Exception =>
                           println(s"An unexpected error occurred: ${e.getMessage}")
@@ -349,21 +351,18 @@ Please select an option from the following menu:
                   choice match {
                     // 1. Generate User Report
                     case 1 =>
-                      reportService.generateUserReport()
-
+                      ActorSystemManager.reportActor ! GenerateUserReport()
                     // 2. Generate Book Report
                     case 2 =>
-                      reportService.generateBookReport()
-
+                      ActorSystemManager.reportActor ! GenerateBookReport()
                     // 3. Generate Transaction Report
                     case 3 =>
-                      reportService.generateTransactionReport()
+                      ActorSystemManager.reportActor ! GenerateTransactionReport()
                     case 4 =>
-                      reportService.generateFineReport()
+                      ActorSystemManager.reportActor ! GenerateFineReport()
                     // 5. Generate Overdue Report
                     case 5 =>
-                      reportService.generateOverdueReport()
-
+                      ActorSystemManager.reportActor ! GenerateOverdueReport()
                     // 6. Back to Main Menu
                     case 6 =>
                       reportGeneration = false
