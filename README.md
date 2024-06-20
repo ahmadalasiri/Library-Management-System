@@ -1,5 +1,7 @@
 # Library Management System
 
+## Programming – 3 (CS 313) (FCIA-Helwan University- Fall 2023)
+
 ## Overview
 
 The Library Management System is a Scala-based console application designed to simplify library operations, including user management, book handling, transaction tracking, and report generation.
@@ -63,11 +65,3 @@ The project follows a modular structure with separate actors, services, and data
 - **UserActor:** An Akka actor responsible for user-related operations.
 - **BookActor:** An Akka actor handling book-related tasks.
 - **TransactionActor:** An Akka actor managing transactions.
-
-## Contributing
-
-Feel free to contribute by submitting bug reports, feature requests, or pull requests. Follow the [contribution guidelines](CONTRIBUTING.md) for more details.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
